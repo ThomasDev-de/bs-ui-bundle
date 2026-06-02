@@ -330,8 +330,9 @@
 
                             <div class="col-md-6">
                                 <div class="field-card">
-                                    <label for="input_password" class="form-label">Access password</label>
-                                    <input type="text" name="password" id="input_password" placeholder="Create a password...">
+                                    <label for="input_password" class="form-label"></label>
+                                    <input type="password" class="form-control" name="password" id="input_password"
+                                           placeholder="Create a password...">
                                     <div class="help-text">Used for the final authorization step.</div>
                                 </div>
                             </div>
@@ -476,7 +477,7 @@
                         const $picker = $('<div class="btn-group" role="group"></div>');
 
                         $picker.bsEmojiPicker({
-                            btnClass: ctx.buttonClassBase + ' js-bs-parsedown-action',
+                            btnClass: ctx.buttonClassBase + ' js-bs-parsedown-action btn-sm',
                             btnText: '<i class="bi bi-emoji-smile"></i>',
                             btnShowToggle: false,
                             targetInput: ctx.editable,
@@ -521,6 +522,10 @@
                         message: 'Please enter your password to continue.',
                         type: 'password',
                         required: true,
+                        invalidFeedback: 'Incorrect password, please try again.',
+                        validate(value) {
+                            return value === $password.val();
+                        }
                     }).then(() => {
                         alert('Form data:\n' + $form.serialize());
                     });
