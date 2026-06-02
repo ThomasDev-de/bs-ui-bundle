@@ -1,0 +1,38 @@
+{
+  "name": "webcito/bs-ui-bundle",
+  "type": "library",
+  "require": {
+    "webcito/jquery-bs-confirm": "dev-main",
+    "webcito/bs-prompt": "dev-main",
+    "webcito/bs-datepicker": "dev-main",
+    "webcito/bs-markdown-editor": "dev-main",
+    "webcito/jquery-select-suggest": "dev-main",
+    "webcito/bs-color-picker": "dev-main",
+    "webcito/bs-toast": "dev-main",
+    "webcito/bs-timepicker": "dev-main",
+    "webcito/bs-phone-input": "dev-main",
+    "webcito/bs-select": "dev-main",
+    "webcito/bs-touchspin": "dev-main",
+    "webcito/bs-password": "dev-main",
+    "webcito/bs-emoji-picker": "dev-main",
+    "webcito/jquery-bs-circle-progress": "dev-main",
+    "webcito/jquery-typing-events": "dev-main"
+  },
+  "autoload": {
+    "psr-4": {
+      "Webcito\\BsUiBundle\\": "src/"
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "@php bin/build.php",
+      "composer dump-autoload"
+    ],
+    "post-update-cmd": [
+      "@php bin/build.php",
+      "composer dump-autoload"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

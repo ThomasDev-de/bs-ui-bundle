@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Beautiful Form Demo · bs-ui-bundle</title>
+    <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/twbs/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --page-bg-1: #f8fafc;
+            --page-bg-2: #eef2ff;
+            --ink: #0f172a;
+            --muted: #64748b;
+            --line: rgba(148, 163, 184, .28);
+            --card: rgba(255, 255, 255, .82);
+            --primary: #6d28d9;
+            --primary-soft: rgba(109, 40, 217, .10);
+            --cyan-soft: rgba(6, 182, 212, .12);
+            --shadow: 0 28px 90px rgba(15, 23, 42, .18);
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--ink);
+            background:
+                    radial-gradient(circle at 12% 10%, rgba(124, 58, 237, .28), transparent 28rem),
+                    radial-gradient(circle at 88% 18%, rgba(6, 182, 212, .22), transparent 30rem),
+                    linear-gradient(180deg, var(--page-bg-1), var(--page-bg-2) 52%, #ffffff);
+        }
+
+        .page-wrap {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 3rem 0;
+        }
+
+        .form-shell {
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, .75);
+            border-radius: 2rem;
+            background: var(--card);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+        }
+
+        .form-aside {
+            position: relative;
+            height: 100%;
+            min-height: 680px;
+            padding: 2.5rem;
+            color: #fff;
+            background:
+                    radial-gradient(circle at 20% 15%, rgba(255,255,255,.20), transparent 16rem),
+                    radial-gradient(circle at 90% 30%, rgba(45, 212, 191, .32), transparent 18rem),
+                    linear-gradient(145deg, #111827, #312e81 58%, #4c1d95);
+        }
+
+        .form-aside::after {
+            content: "";
+            position: absolute;
+            inset: auto -8rem -10rem auto;
+            width: 20rem;
+            height: 20rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,.10);
+            filter: blur(2px);
+        }
+
+        .brand-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: .55rem;
+            padding: .5rem .8rem;
+            border: 1px solid rgba(255,255,255,.22);
+            border-radius: 999px;
+            background: rgba(255,255,255,.10);
+            color: rgba(255,255,255,.9);
+            font-size: .9rem;
+            backdrop-filter: blur(12px);
+        }
+
+        .aside-title {
+            max-width: 30rem;
+            font-weight: 800;
+            letter-spacing: -.045em;
+            line-height: 1.02;
+        }
+
+        .aside-copy {
+            max-width: 27rem;
+            color: rgba(255,255,255,.72);
+            font-size: 1.05rem;
+        }
+
+        .floating-card {
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 1.35rem;
+            background: rgba(255,255,255,.10);
+            box-shadow: 0 20px 70px rgba(0,0,0,.18);
+            backdrop-filter: blur(16px);
+        }
+
+        .floating-row {
+            display: flex;
+            align-items: center;
+            gap: .9rem;
+            padding: .9rem;
+            border-radius: 1rem;
+            background: rgba(255,255,255,.10);
+        }
+
+        .floating-icon {
+            width: 2.4rem;
+            height: 2.4rem;
+            display: inline-grid;
+            place-items: center;
+            border-radius: .85rem;
+            background: rgba(255,255,255,.16);
+            color: #fff;
+        }
+
+        .form-main {
+            padding: 2.25rem;
+        }
+
+        .step-badge {
+            width: 2rem;
+            height: 2rem;
+            display: inline-grid;
+            place-items: center;
+            border-radius: 999px;
+            color: #fff;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            font-size: .9rem;
+            font-weight: 700;
+            box-shadow: 0 12px 30px rgba(109, 40, 217, .24);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            padding-bottom: 1rem;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: -.015em;
+        }
+
+        .section-heading p {
+            margin: .15rem 0 0;
+            color: var(--muted);
+            font-size: .9rem;
+        }
+
+        .field-card {
+            height: 100%;
+            padding: 1rem;
+            border: 1px solid var(--line);
+            border-radius: 1.1rem;
+            background: rgba(255,255,255,.72);
+            transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+        }
+
+        .field-card:focus-within {
+            transform: translateY(-1px);
+            border-color: rgba(109, 40, 217, .42);
+            box-shadow: 0 14px 38px rgba(109, 40, 217, .10);
+        }
+
+        .form-label {
+            margin-bottom: .55rem;
+            font-size: .82rem;
+            font-weight: 800;
+            color: #334155;
+            text-transform: uppercase;
+            letter-spacing: .055em;
+        }
+
+        .form-control {
+            border-color: rgba(148, 163, 184, .36);
+            border-radius: .9rem;
+            min-height: 3rem;
+        }
+
+        .form-control:focus {
+            border-color: rgba(109, 40, 217, .55);
+            box-shadow: 0 0 0 .25rem rgba(109, 40, 217, .10);
+        }
+
+        .help-text {
+            margin-top: .55rem;
+            color: var(--muted);
+            font-size: .85rem;
+        }
+
+        .highlight-panel {
+            border: 1px solid rgba(109, 40, 217, .16);
+            border-radius: 1.35rem;
+            background:
+                    linear-gradient(135deg, var(--primary-soft), var(--cyan-soft)),
+                    rgba(255,255,255,.68);
+        }
+
+        .submit-bar {
+            border: 1px solid rgba(148, 163, 184, .26);
+            border-radius: 1.25rem;
+            background: rgba(255,255,255,.74);
+        }
+
+        .btn-gradient {
+            border: 0;
+            color: #fff;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            box-shadow: 0 16px 40px rgba(109, 40, 217, .26);
+        }
+
+        .btn-gradient:hover,
+        .btn-gradient:focus {
+            color: #fff;
+            filter: brightness(.98);
+        }
+
+        .small-muted {
+            color: var(--muted);
+            font-size: .875rem;
+        }
+
+        @media (max-width: 992px) {
+            .form-aside {
+                min-height: auto;
+            }
+
+            .form-main {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<main class="page-wrap">
+    <div class="container">
+        <form class="form-shell">
+            <div class="row g-0">
+                <div class="col-lg-5">
+                    <aside class="form-aside d-flex flex-column justify-content-between">
+                        <div>
+                            <span class="brand-pill mb-5">
+                                <i class="bi bi-stars"></i>
+                                Beautiful form demo
+                            </span>
+
+                            <h1 class="aside-title display-5 mb-4">
+                                Create your workspace in a few smooth steps.
+                            </h1>
+
+                            <p class="aside-copy mb-5">
+                                A polished, realistic form that quietly shows what the bundle can do without turning the page into documentation.
+                            </p>
+                        </div>
+
+                        <div class="floating-card p-3">
+                            <div class="floating-row mb-3">
+                                <span class="floating-icon"><i class="bi bi-palette2"></i></span>
+                                <div>
+                                    <div class="fw-bold">Personalized setup</div>
+                                    <div class="text-white-50 small">Theme, dates, time and content in one flow.</div>
+                                </div>
+                            </div>
+                            <div class="floating-row mb-3">
+                                <span class="floating-icon"><i class="bi bi-shield-check"></i></span>
+                                <div>
+                                    <div class="fw-bold">Secure confirmation</div>
+                                    <div class="text-white-50 small">Confirmation and password prompt before submit.</div>
+                                </div>
+                            </div>
+                            <div class="floating-row">
+                                <span class="floating-icon"><i class="bi bi-magic"></i></span>
+                                <div>
+                                    <div class="fw-bold">Feels native</div>
+                                    <div class="text-white-50 small">Everything fits naturally into Bootstrap.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="form-main">
+                        <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-4">
+                            <div>
+                                <h2 class="h3 fw-bold mb-1">Workspace details</h2>
+                                <p class="text-secondary mb-0">Fill out the form and submit it to see the full interaction.</p>
+                            </div>
+                            <span class="badge rounded-pill text-bg-light border px-3 py-2">
+                                <i class="bi bi-lock me-1"></i>
+                                Secure demo
+                            </span>
+                        </div>
+
+                        <div class="section-heading">
+                            <span class="step-badge">1</span>
+                            <div>
+                                <h2>Profile</h2>
+                                <p>Basic information for the workspace owner.</p>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <div class="field-card">
+                                    <label for="select_gender" class="form-label">Contact type</label>
+                                    <select name="gender" id="select_gender">
+                                        <option value="diverse">Individual</option>
+                                        <option value="male">Team</option>
+                                        <option value="female">Organization</option>
+                                    </select>
+                                    <div class="help-text">Choose how this workspace should be represented.</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="field-card">
+                                    <label for="input_password" class="form-label">Access password</label>
+                                    <input type="text" name="password" id="input_password" placeholder="Create a password...">
+                                    <div class="help-text">Used for the final authorization step.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-heading">
+                            <span class="step-badge">2</span>
+                            <div>
+                                <h2>Preferences</h2>
+                                <p>Pick the look and schedule for the first project phase.</p>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <div class="field-card">
+                                    <label for="input_colorpicker" class="form-label">Brand color</label>
+                                    <input type="text" name="color" id="input_colorpicker" value="purple" placeholder="Choose a color...">
+                                    <div class="help-text">This sets the visual accent for the workspace.</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="field-card">
+                                    <label for="input_time" class="form-label d-block">Daily check-in</label>
+                                    <input type="text" name="time" id="input_time" placeholder="Choose a time...">
+                                    <div class="help-text">Select the preferred reminder time.</div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="field-card">
+                                    <label for="input_date" class="form-label">Project timeline</label>
+                                    <div id="input_datepicker">
+                                        <input type="hidden" name="date_from" id="input_date" placeholder="Choose a start date...">
+                                        <input type="hidden" name="date_to" id="input_date_2" placeholder="Choose an end date...">
+                                    </div>
+                                    <div class="help-text">Select a start and end date for the initial phase.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-heading">
+                            <span class="step-badge">3</span>
+                            <div>
+                                <h2>Launch notes</h2>
+                                <p>Add a short note and choose an initial completion target.</p>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-xl-8">
+                                <div class="field-card">
+                                    <label for="editor" class="form-label d-block">Welcome message</label>
+                                    <textarea name="text" id="editor" class="form-control" placeholder="Write a short welcome note..."></textarea>
+                                    <div class="help-text">Use formatting, preview and emoji to make it feel more personal.</div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <div class="highlight-panel h-100 p-4">
+                                    <label for="input_spinner" class="form-label d-block">Launch progress</label>
+                                    <input type="text" value="35" min="1" max="100" name="number" id="input_spinner" placeholder="Choose a number...">
+
+                                    <div class="d-flex align-items-center gap-3 mt-4">
+                                        <div id="my_circle_progress"></div>
+                                        <div>
+                                            <div class="fw-bold">Progress target</div>
+                                            <div class="small-muted">Adjust the number to update the visual indicator.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="submit-bar p-3 p-md-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
+                            <div>
+                                <div class="fw-bold">Ready to create the workspace?</div>
+                                <div class="small-muted">You will be asked to confirm and authorize the submission.</div>
+                            </div>
+
+                            <button type="submit" class="btn btn-gradient btn-lg rounded-pill px-4">
+                                Create workspace
+                                <i class="bi bi-arrow-right-short ms-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script src="../vendor/components/jquery/jquery.min.js"></script>
+<script src="../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../dist/webcito-bs-ui-bundle.min.js"></script>
+<!--suppress JSUnusedGlobalSymbols -->
+<script>
+    $(document).ready(function () {
+        const $form = $('form');
+        const $select = $form.find('select');
+        const $colorPicker = $form.find('#input_colorpicker');
+        const $password = $form.find('#input_password');
+        const $datepicker = $form.find('#input_datepicker');
+        const $timepicker = $form.find('#input_time');
+        const $markdownEditor = $form.find('#editor');
+        const $spinner = $form.find('#input_spinner');
+        const $circleProgress = $form.find('#my_circle_progress');
+
+        $select.bsSelect({
+            search: false,
+            nullable: false,
+            animatedMenu: false
+        });
+
+        $colorPicker.bsColorPicker({
+            hideInputs: true
+        });
+
+        $password.bsPassword();
+
+        $datepicker.bsDatepicker({
+            range: true,
+            months: 2
+        });
+
+        $timepicker.bsTimepicker({
+            minuteInterval: 1
+        });
+
+        $markdownEditor.bsMarkdownEditor({
+            minHeight: 240,
+            preview: true,
+            mode: 'editor',
+            resize: 'vertical',
+            size: 'sm',
+            customActions: {
+                emoji: {
+                    position: 'left',
+
+                    render(ctx) {
+                        const $picker = $('<div class="btn-group" role="group"></div>');
+
+                        $picker.bsEmojiPicker({
+                            btnClass: ctx.buttonClassBase + ' js-bs-parsedown-action',
+                            btnText: '<i class="bi bi-emoji-smile"></i>',
+                            btnShowToggle: false,
+                            targetInput: ctx.editable,
+                        });
+
+                        return $picker;
+                    }
+                }
+            }
+        });
+        const value = progressValue();
+        $spinner.bsTouchspin({
+            value: value,
+            size: 'lg'
+        });
+
+        function progressValue() {
+            const rawValue = Number($spinner.val()) || 1;
+            return Math.max(1, Math.min(100, rawValue)) / 100;
+        }
+
+
+
+        $circleProgress.circleProgress({
+            size: 84,
+            value: value
+        });
+
+        $spinner.on('stop.bs.touchspin', function() {
+            $circleProgress.circleProgress('val', $spinner.val());
+        });
+
+        $form.on('submit', function(e){
+            e.preventDefault();
+
+            $.confirm({
+                title: 'Please confirm',
+                message: 'Do you want to create this workspace?',
+                onConfirm(){
+                    $.bsPrompt({
+                        title: 'Authorization required',
+                        message: 'Please enter your password to continue.',
+                        type: 'password',
+                        required: true,
+                    }).then(() => {
+                        alert('Form data:\n' + $form.serialize());
+                    });
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
