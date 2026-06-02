@@ -490,6 +490,11 @@
         });
         const value = progressValue();
         $spinner.bsTouchspin({
+            // formatter: 'currency',
+            min: 1,
+            max: 100,
+            decimals: 0,
+            step:1,
             value: value,
             size: 'lg'
         });
@@ -526,7 +531,11 @@
                         validate(value) {
                             return value === $password.val();
                         }
-                    }).then(() => {
+                    }).then((v) => {
+                        if (v === null) {
+                            alert('Submission cancelled.');
+                            return;
+                        }
                         alert('Form data:\n' + $form.serialize());
                     });
                 }
